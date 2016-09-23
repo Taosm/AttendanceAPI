@@ -1,0 +1,17 @@
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+    <hibernate-mapping>
+    	<class name="com.samuel.attendance.model.Signup" table="signup" schema="attendanceapi" >
+    	
+    		<id name="id" >
+    			<generator class="increment" />
+    		</id>
+  		
+    		<property name="staffId" />
+    		<property name="signupTime" />
+    		  		 			  		
+    	</class>
+      
+    </hibernate-mapping>
