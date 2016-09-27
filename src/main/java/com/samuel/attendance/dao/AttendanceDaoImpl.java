@@ -68,56 +68,70 @@ public class AttendanceDaoImpl implements AttendanceDao {
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
 	public List<Attendance> getAllOdds(int year, int month) {
+
 		
-		//get all the existed data
-		//get out certain year , certain month
-		//List<?> list =ht.find("FROM Attendance where year=? and month=? and dayOfWeek between 1 and 5",year,month);
-		
-		// get all the staff
-		
-		//List<Staff> staffList =(List<Staff>) ht.find("From Staff");
-		
-		//decide which record to be inserted , day by day
+		//get the max number of days of passed month(month, year)
 		Calendar mycal = new GregorianCalendar(year, month-1, 1);// since java count month from 0		
 		int maxDays = mycal.getActualMaximum(Calendar.DAY_OF_MONTH);
 		
-		System.out.println(maxDays);
 		
-		// add empty record to the attendance
+		
+		// ask for full month record 
+		// so start a loop from 1~ maxDays
 		for(int i=1;i<=maxDays;i++){
 			
-			//List<Attendance> attendanceList = (List<Attendance>) ht.find("From Attendance");
+			
+			//get the staffs who has no record on that day of month  i;
 			String query= "SELECT id  FROM Staff id LEFT JOIN Attendance ON id=staffId WHERE staffId IS NULL AND day=? OR day IS NULL ";
-			List<Staff> missStaffs = (List<Staff>) ht.find(query, i);
+	
+			List<Staff> missStaffs = (List<Staff>) ht.find(query, i);		
 			
-			
+			//help check outer loops wokrs fine, for debug
             System.out.println("missIDS : "+missStaffs.size());
 			
+            
+            //missStaffs.size()==0 means totoaly no data on that day
+            //we need to insert all the data
             if(missStaffs.size()==0){ 
-	
-            }else {
+            	
+            	//get all the staffs
+            	
+            	List<Staff> staffList = getAllStaff();
+            	
+            	for(Staff staff:staffList){	
+                	
+            		Calendar cal = Calendar.getInstance();        		
+            		cal.set(year,month+1, i+1);           		 
+            		int dayOfWeek =cal.get(Calendar.DAY_OF_WEEK);
+         	
+                	Attendance attendance = new Attendance((int) staff.getId(),staff.getName(),i,month,dayOfWeek,year);
+                	ht.save(attendance); 
+            	}
+
+            }else {// missStaffs.size()>0 means there are staff who has no post at least once on that day
             	               
     			for(Staff staff : missStaffs){
-                	
-                	// staffId, name,ri,yue ,zhou ,nian 
     				
+                	//get the missed staff infor 
+    				//create record for them on that day 				
     				int staffid = (int) staff.getId();
                 	
             		Calendar cal = Calendar.getInstance();        		
-            		 cal.set(year,month+1, i+1);
-            		 int dayOfWeek =cal.get(Calendar.DAY_OF_WEEK);
+            		cal.set(year,month+1, i+1);           		 
+            		int dayOfWeek =cal.get(Calendar.DAY_OF_WEEK);
             		
-            		System.out.println("DayOfWeek :"+cal.get(Calendar.DAY_OF_WEEK));
+            		//System.out.println("DayOfWeek :"+cal.get(Calendar.DAY_OF_WEEK));
               	
                 	Attendance attendance = new Attendance(staffid,getStaffName(staffid),i,month,dayOfWeek,year);
-                	ht.save(attendance);     	
+                	ht.save(attendance); 
+                	
                  }// end of add missed id
             	
             }
-
-        
+       
 		  }// end of for loop ceiling -30 days
-			
+		
+			//now , we got all the Odd records
 			return (List<Attendance>) ht.find("from Attendance where firstTime is null or lastTime is null");	
 		}
 	
@@ -220,6 +234,13 @@ public class AttendanceDaoImpl implements AttendanceDao {
 		Params params =  list.get(0);		
 
 		return params;		
+	}
+	
+	public List<Staff> getAllStaff(){
+		
+		@SuppressWarnings("unchecked")
+		List<Staff>list = (List<Staff>) ht.find("FROM Staff");		
+		return list;
 	}
 	
 	
