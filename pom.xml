@@ -97,7 +97,12 @@
 			    <artifactId>jersey-bean-validation</artifactId>
 			    <version>2.22.2</version>
 			</dependency>
-			
+
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>3.4</version>
+			</dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -142,6 +147,10 @@
 		  <dependency>
 		  	<groupId>org.glassfish.hk2</groupId>
 		  	<artifactId>hk2-utils</artifactId>
+		  </dependency>
+		  <dependency>
+		  	<groupId>org.apache.commons</groupId>
+		  	<artifactId>commons-lang3</artifactId>
 		  </dependency>
     </dependencies>
     <properties>

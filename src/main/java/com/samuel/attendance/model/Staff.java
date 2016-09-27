@@ -1,5 +1,6 @@
 package com.samuel.attendance.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -8,8 +9,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 public class Staff {
 	@Id
+	@Column(name="staff_staffId")
 	private long id;
 	
+	@Column(name="staff_name")
 	private String name;
 
 	public Staff() {

@@ -1,3 +1,30 @@
+
+-----ATTENDANCE RESTful API---revised version----
+
+
+1)POST 模拟打卡/补打卡，增加一条考勤记录，后端程序实现， 未使用存储过程
+
+	实现原理：第一次打卡创建记录， 以后的打卡都只更新记录
+
+  post http://1.83.81.251:8034/Attendance/webapi/attendances/{tsaffId}
+  
+测试链接：http://1.83.81.251:8034/Attendance/webapi/attendances/4
+
+2) 获取/修改参数
+
+GET > http://1.83.81.251:8034/Attendance/webapi/params
+PUT > http://1.83.81.251:8034/Attendance/webapi/params
+
+3) 获取个人当月考勤记录功能实现
+GET >http://1.83.81.251:8034/Attendance/webapi/attendances/3?month=9
+
+4) 获取异常打卡记录功能需要完善，现在只能获得当天的异常打卡记录(待解决bug)
+
+Get > http://1.83.81.251:8034/Attendance/webapi/attendances/odds?month=9&year=2016
+
+
+
+
 -----ATTENDANCE RESTful API---------
 
 * 软件架构说明

@@ -1,11 +1,13 @@
 package com.samuel.attendance.resource;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -21,13 +23,29 @@ import com.samuel.attendance.service.AttendanceBo;
 @Produces(MediaType.APPLICATION_JSON)
 public class AttendanceResource {
 	
+	private AttendanceDao dao = StaticApplicationContext.getContext().getBean(AttendanceDao.class);
+	@POST
+	@Path("/{staffId}")	
+	public Attendance addRecord(@PathParam("staffId")int staffId ) throws ParseException{
+		
+		return dao.addRecord(staffId);
+	}
+	
+	
+	
+
+	
+	
+	
+	
+	
 	
 	//since Jersey container is not managed by Spring container
 	//need to get access the Spring WebAppContext
 	//By defining an access class---margin for improvement!
 	private AttendanceBo attendanceBo= StaticApplicationContext.getContext().getBean(AttendanceBo.class);
 	
-	//private AttendanceDao dao = StaticApplicationContext.getContext().getBean(AttendanceDao.class);
+	
 	
 	/**
 	 * @param staffId staffId, int number
